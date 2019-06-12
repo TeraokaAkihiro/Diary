@@ -1,6 +1,7 @@
 package com.testapps.akey.diary
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -14,6 +15,8 @@ import kotlinx.android.synthetic.main.day_block.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 import android.view.MotionEvent
+
+const val EXTRA_MESSAGE = "com.testapps.akey.diary"
 
 class MainActivity : AppCompatActivity() {
 
@@ -64,6 +67,14 @@ class MainActivity : AppCompatActivity() {
         gvDayOfWeeks.adapter = titleAdapter
         gvDayBlocks.setOnTouchListener(CustomTouchListener())
         gvDayBlocks.adapter = dayBlockAdapter
+    }
+
+    fun sendMessage(view: View) {
+        val message = "test message"
+        val intent = Intent(this, DiaryInputActivity::class.java).apply {
+            putExtra(EXTRA_MESSAGE, message)
+        }
+        startActivity(intent)
     }
 
     class TitleAdapter : BaseAdapter {

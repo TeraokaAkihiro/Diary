@@ -15,5 +15,5 @@
             android:height="50dp"
             android:gravity="left"
             android:text="99"
-            android:textSize="16sp" />
+            android:textSize="16sp"/>
 </LinearLayout>

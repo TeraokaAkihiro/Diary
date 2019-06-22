@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Diary</string>
     <string name="title_activity_diary_input">DiaryInput</string>
+
+    <string name="save_dialog_title"></string>
+    <string name="save_dialog_message">Do you want to discard changes?</string>
+    <string name="save_dialog_ok">Don\'t save</string>
+    <string name="save_dialog_no">Cancel</string>
 </resources>

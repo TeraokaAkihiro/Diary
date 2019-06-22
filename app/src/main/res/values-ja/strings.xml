@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Diary</string>
+    <string name="save_dialog_no">キャンセル</string>
+    <string name="save_dialog_ok">保存しない</string>
+    <string name="save_dialog_message">変更を破棄しますか？</string>
+</resources>

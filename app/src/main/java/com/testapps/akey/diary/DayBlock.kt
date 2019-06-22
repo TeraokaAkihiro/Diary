@@ -1,9 +1,20 @@
 package com.testapps.akey.diary
 
-class DayBlock {
-    var name: String? = null
+import java.text.SimpleDateFormat
+import java.util.*
 
-    constructor(name: String) {
-        this.name = name
+class DayBlock {
+    var name: String = ""
+    var date: Date? = null
+    var dateString: String = ""
+
+    constructor()
+
+    constructor(year: Int, month: Int, day: Int) {
+        var calendar = GregorianCalendar()
+        calendar.set(year, month, day)
+        this.name = calendar.get(Calendar.DATE).toString()
+        this.date = calendar.time
+        this.dateString = SimpleDateFormat(DATE_FORMAT).format(date)
     }
 }

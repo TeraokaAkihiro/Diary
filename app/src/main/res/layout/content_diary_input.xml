@@ -9,4 +9,11 @@
         tools:showIn="@layout/activity_diary_input"
         tools:context=".DiaryInputActivity">
 
+    <EditText
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:background="@null"
+            android:gravity="top"/>
+
 </android.support.constraint.ConstraintLayout>

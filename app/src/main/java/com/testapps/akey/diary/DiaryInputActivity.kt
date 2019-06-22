@@ -1,11 +1,15 @@
 package com.testapps.akey.diary
 
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity;
-import android.widget.TextView
-
+import android.support.v7.app.AlertDialog
+import android.support.v7.app.AppCompatActivity
+import android.view.MenuItem
+import android.view.WindowManager
 import kotlinx.android.synthetic.main.activity_diary_input.*
+import java.text.SimpleDateFormat
+import java.util.*
+
+var date: Date? = null
 
 class DiaryInputActivity : AppCompatActivity() {
 
@@ -14,19 +18,38 @@ class DiaryInputActivity : AppCompatActivity() {
         setContentView(R.layout.activity_diary_input)
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
+        // FloatingActionButton above keyboard
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        // Get the Intent that started this activity and extract the string
         val message = intent.getStringExtra(EXTRA_MESSAGE)
+        date = SimpleDateFormat(DATE_FORMAT).parse(message)
 
-        // Capture the layout's TextView and set the string as its text
-        val textView = findViewById<TextView>(R.id.textView).apply {
-            text = message
+        save.setOnClickListener {
+            onSaveClick()
         }
     }
 
+    private fun onSaveClick() {
+        finish()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home ->
+                popAlertDialog()
+        }
+        return true // Never close
+    }
+
+    private fun popAlertDialog() {
+        val dialogBuilder = AlertDialog.Builder(this)
+        dialogBuilder.setMessage(R.string.save_dialog_message)
+            .setCancelable(false)
+            .setPositiveButton(R.string.save_dialog_ok) { _, _ -> finish() }
+            .setNegativeButton(R.string.save_dialog_no) { dialog, _ -> dialog.cancel() }
+        val alert = dialogBuilder.create()
+        alert.show()
+    }
 }

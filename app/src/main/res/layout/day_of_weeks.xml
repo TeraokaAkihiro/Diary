@@ -16,5 +16,5 @@
             android:gravity="center_vertical"
             android:text="SUN "
             android:textSize="11sp"
-            android:textAlignment="center" />
+            android:textAlignment="center"/>
 </LinearLayout>

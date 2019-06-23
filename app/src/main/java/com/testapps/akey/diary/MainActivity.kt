@@ -51,11 +51,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun readDiaryText(date: String): String{
+    private fun readDiaryText(date: String): String {
         return diaryDBHelper.readDiary(date)
     }
 
-    private fun addTitle(){
+    private fun addTitle() {
         var titleAdapter: TitleAdapter? = null
         var titleList = ArrayList<DayOfWeekTitle>()
 
@@ -65,13 +65,13 @@ class MainActivity : AppCompatActivity() {
             titleList.add(DayOfWeekTitle(dayOfWeeks[i], Color.GRAY))
         }
         titleList[0].color = Color.rgb(244, 67, 54)
-        titleList[dayOfWeeks.size-1].color = Color.rgb(3, 169, 244)
+        titleList[dayOfWeeks.size - 1].color = Color.rgb(3, 169, 244)
 
         titleAdapter = TitleAdapter(this, titleList)
         gvDayOfWeeks.adapter = titleAdapter
     }
 
-    private fun addDayBlocks(){
+    private fun addDayBlocks() {
         val calendar = GregorianCalendar()
         val toYear = calendar.get(Calendar.YEAR)
         val toMonth = calendar.get(Calendar.MONTH) // Jan = 0...

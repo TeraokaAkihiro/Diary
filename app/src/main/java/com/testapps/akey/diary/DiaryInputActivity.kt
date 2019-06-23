@@ -42,7 +42,7 @@ class DiaryInputActivity : AppCompatActivity() {
 
     private fun onSaveClick() {
         var diaryModel = DiaryModel(date = dateString, text = include.editText.text.toString())
-        if (!diaryDBHelper.updateDiary(diaryModel)){
+        if (!diaryDBHelper.updateDiary(diaryModel)) {
             diaryDBHelper.insertDiary(diaryModel)
         }
         finish()

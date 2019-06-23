@@ -21,6 +21,8 @@ const val DATE_FORMAT = "yyyyMMdd"
 
 class MainActivity : AppCompatActivity() {
 
+    lateinit var diaryDBHelper: DiaryDBHelper
+
     var dayBlockAdapter: DayBlockAdapter? = null
     var dayBlockList = ArrayList<DayBlock>()
 
@@ -30,12 +32,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        diaryDBHelper = DiaryDBHelper(this)
+
         addTitle()
         addDayBlocks()
 
         gvDayBlocks.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, id ->
             selectedDayBlock = dayBlockList[position]
-            tvDayText.text =selectedDayBlock!!.dateString
+            tvDayText.text = readDiaryText(selectedDayBlock!!.dateString)
         }
         tvDayText.setOnClickListener {
             if (selectedDayBlock == null) return@setOnClickListener
@@ -45,6 +49,10 @@ class MainActivity : AppCompatActivity() {
             }
             startActivity(intent)
         }
+    }
+
+    private fun readDiaryText(date: String): String{
+        return diaryDBHelper.readDiary(date)
     }
 
     private fun addTitle(){

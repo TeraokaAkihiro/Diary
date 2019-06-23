@@ -2,6 +2,15 @@
     <string name="app_name">Diary</string>
     <string name="title_activity_diary_input">DiaryInput</string>
 
+    <string-array name="day_of_week">
+        <item>SUN</item>
+        <item>MON</item>
+        <item>TUE</item>
+        <item>WED</item>
+        <item>THU</item>
+        <item>FRI</item>
+        <item>SUT</item>
+    </string-array>
     <string name="save_dialog_title"></string>
     <string name="save_dialog_message">Do you want to discard changes?</string>
     <string name="save_dialog_ok">Don\'t save</string>

@@ -14,7 +14,6 @@ import kotlinx.android.synthetic.main.day_of_weeks.view.*
 import kotlinx.android.synthetic.main.day_block.view.*
 import java.util.*
 import kotlin.collections.ArrayList
-import android.view.MotionEvent
 import android.widget.AdapterView
 
 const val EXTRA_MESSAGE = "com.testapps.akey.diary"
@@ -27,13 +26,44 @@ class MainActivity : AppCompatActivity() {
 
     var selectedDayBlock: DayBlock? = null
 
-    var titleAdapter: TitleAdapter? = null
-    var titleList = ArrayList<DayOfWeekTitle>()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        addTitle()
+        addDayBlocks()
+
+        gvDayBlocks.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, id ->
+            selectedDayBlock = dayBlockList[position]
+            tvDayText.text =selectedDayBlock!!.dateString
+        }
+        tvDayText.setOnClickListener {
+            if (selectedDayBlock == null) return@setOnClickListener
+            val date = selectedDayBlock!!.dateString
+            val intent = Intent(this, DiaryInputActivity::class.java).apply {
+                putExtra(EXTRA_MESSAGE, date)
+            }
+            startActivity(intent)
+        }
+    }
+
+    private fun addTitle(){
+        var titleAdapter: TitleAdapter? = null
+        var titleList = ArrayList<DayOfWeekTitle>()
+
+        val dayOfWeeks = resources.getStringArray(R.array.day_of_week)
+
+        for (i in 0 until dayOfWeeks.size) {
+            titleList.add(DayOfWeekTitle(dayOfWeeks[i], Color.GRAY))
+        }
+        titleList[0].color = Color.rgb(244, 67, 54)
+        titleList[dayOfWeeks.size-1].color = Color.rgb(3, 169, 244)
+
+        titleAdapter = TitleAdapter(this, titleList)
+        gvDayOfWeeks.adapter = titleAdapter
+    }
+
+    private fun addDayBlocks(){
         val calendar = GregorianCalendar()
         val toYear = calendar.get(Calendar.YEAR)
         val toMonth = calendar.get(Calendar.MONTH) // Jan = 0...
@@ -58,32 +88,7 @@ class MainActivity : AppCompatActivity() {
 
         dayBlockAdapter = DayBlockAdapter(this, dayBlockList)
 
-        titleList.add(DayOfWeekTitle("Sun", Color.rgb(244, 67, 54)))
-        titleList.add(DayOfWeekTitle("MON", Color.GRAY))
-        titleList.add(DayOfWeekTitle("TUE", Color.GRAY))
-        titleList.add(DayOfWeekTitle("WED", Color.GRAY))
-        titleList.add(DayOfWeekTitle("THU", Color.GRAY))
-        titleList.add(DayOfWeekTitle("FRI", Color.GRAY))
-        titleList.add(DayOfWeekTitle("SUT", Color.rgb(3, 169, 244)))
-
-        titleAdapter = TitleAdapter(this, titleList)
-
-        gvDayOfWeeks.adapter = titleAdapter
-        gvDayBlocks.setOnTouchListener(CustomTouchListener())
         gvDayBlocks.adapter = dayBlockAdapter
-
-        gvDayBlocks.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, id ->
-            selectedDayBlock = dayBlockList[position]
-            tvDayText.text = selectedDayBlock!!.dateString
-        }
-        tvDayText.setOnClickListener {
-            if (selectedDayBlock == null) return@setOnClickListener
-            val date = selectedDayBlock!!.dateString
-            val intent = Intent(this, DiaryInputActivity::class.java).apply {
-                putExtra(EXTRA_MESSAGE, date)
-            }
-            startActivity(intent)
-        }
     }
 
     class TitleAdapter : BaseAdapter {
@@ -150,19 +155,6 @@ class MainActivity : AppCompatActivity() {
             dayBlockView.tvName.text = dayBlock.name
 
             return dayBlockView
-        }
-    }
-
-    inner class CustomTouchListener : View.OnTouchListener {
-        override fun onTouch(view: View, motionEvent: MotionEvent): Boolean {
-            when (motionEvent.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    var name = view.tvName
-                }
-                MotionEvent.ACTION_CANCEL, MotionEvent.ACTION_UP -> {
-                }
-            }
-            return false
         }
     }
 }

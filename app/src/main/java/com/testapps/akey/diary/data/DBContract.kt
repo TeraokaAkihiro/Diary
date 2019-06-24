@@ -1,4 +1,4 @@
-package com.testapps.akey.diary
+package com.testapps.akey.diary.data
 
 import android.provider.BaseColumns
 

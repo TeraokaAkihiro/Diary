@@ -1,4 +1,4 @@
-package com.testapps.akey.diary
+package com.testapps.akey.diary.ui
 
 import android.content.Context
 import android.content.Intent
@@ -15,6 +15,10 @@ import kotlinx.android.synthetic.main.day_block.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 import android.widget.AdapterView
+import com.testapps.akey.diary.model.DayBlock
+import com.testapps.akey.diary.model.DayOfWeekTitle
+import com.testapps.akey.diary.R
+import com.testapps.akey.diary.data.local.DiaryDBHelper
 
 const val EXTRA_MESSAGE = "com.testapps.akey.diary"
 const val DATE_FORMAT = "yyyyMMdd"
@@ -37,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         addTitle()
         addDayBlocks()
 
-        gvDayBlocks.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, id ->
+        gvDayBlocks.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
             selectedDayBlock = dayBlockList[position]
             tvDayText.text = readDiaryText(selectedDayBlock!!.dateString)
         }
@@ -56,7 +60,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun addTitle() {
-        var titleAdapter: TitleAdapter? = null
+        var titleAdapter: TitleAdapter?
         var titleList = ArrayList<DayOfWeekTitle>()
 
         val dayOfWeeks = resources.getStringArray(R.array.day_of_week)

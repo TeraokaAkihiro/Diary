@@ -1,4 +1,4 @@
-package com.testapps.akey.diary
+package com.testapps.akey.diary.data.model
 
 class DiaryModel(
     val date: String,

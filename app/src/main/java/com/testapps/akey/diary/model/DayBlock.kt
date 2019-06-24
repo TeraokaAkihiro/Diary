@@ -1,5 +1,6 @@
-package com.testapps.akey.diary
+package com.testapps.akey.diary.model
 
+import com.testapps.akey.diary.ui.DATE_FORMAT
 import java.text.SimpleDateFormat
 import java.util.*
 

@@ -1,4 +1,4 @@
-package com.testapps.akey.diary
+package com.testapps.akey.diary.data.local
 
 import android.content.ContentValues
 import android.content.Context
@@ -8,10 +8,15 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
+import com.testapps.akey.diary.data.DBContract
+import com.testapps.akey.diary.data.model.DiaryModel
 
 const val TAG = "DiaryDBHelper"
 
-class DiaryDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+class DiaryDBHelper(context: Context) : SQLiteOpenHelper(context,
+    DATABASE_NAME, null,
+    DATABASE_VERSION
+) {
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(SQL_CREATE_ENTRIES)
     }
@@ -55,7 +60,7 @@ class DiaryDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME,
 
     fun readDiary(date: String): String {
         val db = writableDatabase
-        var cursor: Cursor? = null
+        var cursor: Cursor?
         try {
             cursor = db.rawQuery(
                 "SELECT * FROM " + DBContract.DiaryEntry.TABLE_NAME +

@@ -1,11 +1,13 @@
-package com.testapps.akey.diary
+package com.testapps.akey.diary.ui
 
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
-import android.text.Editable
 import android.view.MenuItem
 import android.view.WindowManager
+import com.testapps.akey.diary.R
+import com.testapps.akey.diary.data.local.DiaryDBHelper
+import com.testapps.akey.diary.data.model.DiaryModel
 import kotlinx.android.synthetic.main.activity_diary_input.*
 import kotlinx.android.synthetic.main.content_diary_input.view.*
 import java.text.SimpleDateFormat
@@ -41,7 +43,8 @@ class DiaryInputActivity : AppCompatActivity() {
     }
 
     private fun onSaveClick() {
-        var diaryModel = DiaryModel(date = dateString, text = include.editText.text.toString())
+        var diaryModel =
+            DiaryModel(date = dateString, text = include.editText.text.toString())
         if (!diaryDBHelper.updateDiary(diaryModel)) {
             diaryDBHelper.insertDiary(diaryModel)
         }
@@ -57,12 +60,17 @@ class DiaryInputActivity : AppCompatActivity() {
     }
 
     private fun popAlertDialog() {
-        val dialogBuilder = AlertDialog.Builder(this)
-        dialogBuilder.setMessage(R.string.save_dialog_message)
+        AlertDialog
+            .Builder(this)
+            .setMessage(R.string.save_dialog_message)
             .setCancelable(false)
-            .setPositiveButton(R.string.save_dialog_ok) { _, _ -> finish() }
-            .setNegativeButton(R.string.save_dialog_no) { dialog, _ -> dialog.cancel() }
-        val alert = dialogBuilder.create()
-        alert.show()
+            .setPositiveButton(R.string.save_dialog_ok) { _, _ ->
+                finish()
+            }
+            .setNegativeButton(R.string.save_dialog_no) { dialog, _ ->
+                dialog.cancel()
+            }
+            .create()
+            .show()
     }
 }

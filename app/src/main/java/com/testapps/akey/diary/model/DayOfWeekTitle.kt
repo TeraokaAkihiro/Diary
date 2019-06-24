@@ -1,4 +1,4 @@
-package com.testapps.akey.diary
+package com.testapps.akey.diary.model
 
 class DayOfWeekTitle {
     var name: String? = null

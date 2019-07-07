@@ -6,6 +6,7 @@
         android:layout_height="match_parent"
         tools:context=".ui.MainActivity">
     <LinearLayout
+            android:id="@+id/viewManager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingLeft="1dp"
@@ -16,18 +17,13 @@
                 android:id="@+id/gvDayOfWeeks"
                 android:layout_width="match_parent"
                 android:layout_height="26dp"
-                android:columnWidth="150dp"
                 android:horizontalSpacing="1dp"
                 android:numColumns="7"
                 android:verticalSpacing="1dp"/>
-        <GridView
-                android:id="@+id/gvDayBlocks"
+        <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvDayBlocks"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:columnWidth="150dp"
-                android:horizontalSpacing="1dp"
-                android:numColumns="7"
-                android:verticalSpacing="1dp"/>
+                android:layout_height="wrap_content"/>
         <TextView
                 android:id="@+id/tvDayText"
                 android:layout_width="match_parent"

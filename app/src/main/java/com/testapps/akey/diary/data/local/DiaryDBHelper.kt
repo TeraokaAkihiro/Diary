@@ -13,7 +13,8 @@ import com.testapps.akey.diary.data.model.DiaryModel
 
 const val TAG = "DiaryDBHelper"
 
-class DiaryDBHelper(context: Context) : SQLiteOpenHelper(context,
+class DiaryDBHelper(context: Context) : SQLiteOpenHelper(
+    context,
     DATABASE_NAME, null,
     DATABASE_VERSION
 ) {

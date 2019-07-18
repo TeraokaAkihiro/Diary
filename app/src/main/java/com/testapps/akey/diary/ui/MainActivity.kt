@@ -9,13 +9,13 @@ import android.support.v7.widget.LinearSnapHelper
 import android.support.v7.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.collections.ArrayList
-import com.testapps.akey.diary.model.DayBlock
 import com.testapps.akey.diary.model.DayOfWeekTitle
 import com.testapps.akey.diary.R
 import com.testapps.akey.diary.data.local.DiaryDBHelper
 import com.testapps.akey.diary.model.CalendarMonth
 import com.testapps.akey.diary.ui.adapter.CalendarMonthAdapter
 import com.testapps.akey.diary.ui.adapter.TitleAdapter
+import java.util.*
 
 const val EXTRA_MESSAGE = "com.testapps.akey.diary"
 const val DATE_FORMAT = "yyyyMMdd"
@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var diaryDBHelper: DiaryDBHelper
 
-    var selectedDayBlock: DayBlock? = null
+    var calendarMonthList: ArrayList<CalendarMonth> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,16 +32,19 @@ class MainActivity : AppCompatActivity() {
 
         diaryDBHelper = DiaryDBHelper(this)
 
-        var calendarMonthAdapter: CalendarMonthAdapter
-        var calendarMonthList = ArrayList<CalendarMonth>()
-        calendarMonthList.add(CalendarMonth())
-        calendarMonthList.add(CalendarMonth())
-        calendarMonthList.add(CalendarMonth())
-        calendarMonthAdapter = CalendarMonthAdapter(this, calendarMonthList.size)
+        var calendarMonthAdapter: CalendarMonthAdapter = CalendarMonthAdapter(this, calendarMonthList)
+        var calendar = GregorianCalendar()
+        var toYear = calendar.get(Calendar.YEAR)
+        var toMonth = calendar.get(Calendar.MONTH)
+
+        calendarMonthList.add(CalendarMonth(toYear, toMonth))
 
         var recyclerView: RecyclerView = findViewById(R.id.rvDayBlocks)
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = calendarMonthAdapter
+
+        calendarMonthList.add(1, CalendarMonth(toYear, toMonth + 1))
+        calendarMonthAdapter.notifyItemInserted(1)
 
         val snapHelper = LinearSnapHelper()
         snapHelper.attachToRecyclerView(rvDayBlocks)
@@ -49,8 +52,8 @@ class MainActivity : AppCompatActivity() {
         addTitle()
 
         tvDayText.setOnClickListener {
-            if (selectedDayBlock == null) return@setOnClickListener
-            val date = selectedDayBlock!!.dateString
+            if (calendarMonthAdapter.selectedDayBlock?.dateString.isNullOrEmpty()) return@setOnClickListener
+            val date = calendarMonthAdapter.selectedDayBlock!!.dateString
             val intent = Intent(this, DiaryInputActivity::class.java).apply {
                 putExtra(EXTRA_MESSAGE, date)
             }

@@ -8,14 +8,16 @@ import android.widget.BaseAdapter
 import com.testapps.akey.diary.R
 import com.testapps.akey.diary.model.DayBlock
 import kotlinx.android.synthetic.main.day_block.view.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class DayBlockAdapter : BaseAdapter {
     var dayBlockList = ArrayList<DayBlock>()
     var context: Context? = null
 
-    constructor(context: Context, foodsList: ArrayList<DayBlock>) : super() {
+    constructor(context: Context, year: Int, month: Int) : super() {
         this.context = context
-        this.dayBlockList = foodsList
+        this.dayBlockList = getMonthDayBlocks(year, month)
     }
 
     override fun getCount(): Int {
@@ -39,5 +41,27 @@ class DayBlockAdapter : BaseAdapter {
         dayBlockView.tvName.text = dayBlock.name
 
         return dayBlockView
+    }
+
+    private fun getMonthDayBlocks(year: Int, month: Int): ArrayList<DayBlock> {
+        var list = ArrayList<DayBlock>()
+
+        var calendar = GregorianCalendar()
+        calendar.set(year, month, 1)
+        val toMonthFirstDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+        val toMonthLastDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+
+        for (i: Int in 2..toMonthFirstDayOfWeek) {
+            list.add(DayBlock())
+        }
+
+        for (i: Int in 1..toMonthLastDay) {
+            list.add(DayBlock(year, month, i))
+        }
+
+        for (i: Int in list.size + 1..7 * 6) {
+            list.add(DayBlock())
+        }
+        return list
     }
 }

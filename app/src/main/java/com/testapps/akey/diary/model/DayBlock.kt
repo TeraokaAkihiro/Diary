@@ -1,21 +1,20 @@
 package com.testapps.akey.diary.model
 
-import com.testapps.akey.diary.ui.DATE_FORMAT
-import java.text.SimpleDateFormat
-import java.util.*
+import com.testapps.akey.diary.ui.INTENT_DATE_FORMAT
 
 class DayBlock {
     var name: String = ""
-    var date: Date? = null
-    var dateString: String = ""
+    var date: DateTime? = null
 
     constructor()
 
     constructor(year: Int, month: Int, day: Int) {
-        var calendar = GregorianCalendar()
-        calendar.set(year, month, day)
-        this.name = calendar.get(Calendar.DATE).toString()
-        this.date = calendar.time
-        this.dateString = SimpleDateFormat(DATE_FORMAT).format(date)
+        this.date = DateTime()
+        this.date!!.setDateTime(year, month, day)
+        this.name = this.date?.day.toString()
+    }
+
+    fun getIntentString(): String? {
+        return date?.toString(INTENT_DATE_FORMAT)
     }
 }

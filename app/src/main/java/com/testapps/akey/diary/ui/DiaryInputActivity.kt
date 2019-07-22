@@ -8,15 +8,13 @@ import android.view.WindowManager
 import com.testapps.akey.diary.R
 import com.testapps.akey.diary.data.local.DiaryDBHelper
 import com.testapps.akey.diary.data.model.DiaryModel
+import com.testapps.akey.diary.model.DateTime
 import kotlinx.android.synthetic.main.activity_diary_input.*
 import kotlinx.android.synthetic.main.content_diary_input.view.*
-import java.text.SimpleDateFormat
-import java.util.*
-
-var dateString: String = ""
-var date: Date? = null
 
 class DiaryInputActivity : AppCompatActivity() {
+    var dateString: String = ""
+    var date: DateTime? = null
 
     lateinit var diaryDBHelper: DiaryDBHelper
 
@@ -33,7 +31,7 @@ class DiaryInputActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         dateString = intent.getStringExtra(EXTRA_MESSAGE)
-        date = SimpleDateFormat(DATE_FORMAT).parse(dateString)
+        date = DateTime.parse(dateString, INTENT_DATE_FORMAT)
 
         include.editText.setText(diaryDBHelper.readDiary(dateString))
 
@@ -43,8 +41,7 @@ class DiaryInputActivity : AppCompatActivity() {
     }
 
     private fun onSaveClick() {
-        var diaryModel =
-            DiaryModel(date = dateString, text = include.editText.text.toString())
+        var diaryModel = DiaryModel(date = dateString, text = include.editText.text.toString())
         if (!diaryDBHelper.updateDiary(diaryModel)) {
             diaryDBHelper.insertDiary(diaryModel)
         }

@@ -1,29 +1,31 @@
 package com.testapps.akey.diary.ui.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import com.testapps.akey.diary.R
+import com.testapps.akey.diary.model.DayBlock
 import com.testapps.akey.diary.model.DayOfWeekTitle
 import kotlinx.android.synthetic.main.day_of_weeks.view.*
 
-class TitleAdapter : BaseAdapter {
-    var titleList = ArrayList<DayOfWeekTitle>()
+class DayOfWeekAdapter : BaseAdapter {
+    var dayOfWeekList = ArrayList<DayOfWeekTitle>()
     var context: Context? = null
 
-    constructor(context: Context, foodsList: ArrayList<DayOfWeekTitle>) : super() {
+    constructor(context: Context, dayOfWeekList: ArrayList<DayOfWeekTitle>) : super() {
         this.context = context
-        this.titleList = foodsList
+        this.dayOfWeekList = dayOfWeekList
     }
 
     override fun getCount(): Int {
-        return titleList.size
+        return dayOfWeekList.size
     }
 
     override fun getItem(position: Int): Any {
-        return titleList[position]
+        return dayOfWeekList[position]
     }
 
     override fun getItemId(position: Int): Long {
@@ -31,7 +33,7 @@ class TitleAdapter : BaseAdapter {
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val title = this.titleList[position]
+        val title = this.dayOfWeekList[position]
 
         var inflator = context!!.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         var titleView = inflator.inflate(R.layout.day_of_weeks, null)

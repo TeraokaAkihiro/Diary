@@ -15,6 +15,6 @@ class DayBlock {
     }
 
     fun getIntentString(): String? {
-        return date?.toString(INTENT_DATE_FORMAT)
+        return this.date?.toString(INTENT_DATE_FORMAT)
     }
 }

@@ -34,6 +34,7 @@ class DateTime {
             add(Calendar.YEAR, year)
             add(Calendar.MONTH, month)
             add(Calendar.DAY_OF_MONTH, month)
+            add(Calendar.DATE, day)
             add(Calendar.HOUR, hour)
             add(Calendar.MINUTE, minute)
             add(Calendar.MILLISECOND, second)
@@ -60,6 +61,15 @@ class DateTime {
     }
     fun setDateTime(calendar: Calendar) {
         setDateTime(calendar.time)
+    }
+    fun setDateTime(date: DateTime) {
+        val year = date.year
+        val month = date.month
+        val day = date.day
+        val hour = date.hour
+        val minute = date.minute
+        val second = date.second
+        mCalendar.set(year, month, day, hour, minute, second)
     }
 
     //日付を文字列に変換するるメソッド

@@ -13,7 +13,9 @@ import kotlinx.android.synthetic.main.activity_diary_input.*
 import kotlinx.android.synthetic.main.content_diary_input.view.*
 
 class DiaryInputActivity : AppCompatActivity() {
-    var dateString: String = ""
+
+    private var prevText: String = ""
+    private var dateString: String = ""
     var date: DateTime? = null
 
     lateinit var diaryDBHelper: DiaryDBHelper
@@ -33,7 +35,9 @@ class DiaryInputActivity : AppCompatActivity() {
         dateString = intent.getStringExtra(EXTRA_MESSAGE)
         date = DateTime.parse(dateString, INTENT_DATE_FORMAT)
 
-        include.editText.setText(diaryDBHelper.readDiary(dateString))
+        var text = diaryDBHelper.readDiary(dateString)
+        include.editText.setText(text)
+        prevText = text
 
         save.setOnClickListener {
             onSaveClick()
@@ -48,10 +52,22 @@ class DiaryInputActivity : AppCompatActivity() {
         finish()
     }
 
+    override fun onBackPressed() {
+        if (prevText != include.editText.text.toString()) {
+            popAlertDialog()
+            return
+        }
+        super.onBackPressed()
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home ->
-                popAlertDialog()
+                if (prevText != include.editText.text.toString()) {
+                    popAlertDialog()
+                } else {
+                    finish()
+                }
         }
         return true // Never close
     }

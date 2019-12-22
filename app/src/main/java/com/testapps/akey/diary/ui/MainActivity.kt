@@ -4,7 +4,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.view.ViewPager
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.collections.ArrayList
 import com.testapps.akey.diary.model.DayOfWeekTitle
@@ -12,10 +11,11 @@ import com.testapps.akey.diary.R
 import com.testapps.akey.diary.data.local.DiaryDBHelper
 import com.testapps.akey.diary.model.CalendarMonth
 import com.testapps.akey.diary.model.DateTime
-import com.testapps.akey.diary.ui.adapter.CalendarMonthAdapter
 import com.testapps.akey.diary.ui.adapter.DayOfWeekAdapter
 import java.util.*
-import android.support.v4.view.ViewPager.OnPageChangeListener
+import android.view.Menu
+import android.view.MenuItem
+import com.testapps.akey.diary.ui.adapter.DayBlockAdapter
 
 const val EXTRA_MESSAGE = "com.testapps.akey.diary"
 const val INTENT_DATE_FORMAT = "yyyyMMdd"
@@ -23,7 +23,8 @@ const val INTENT_DATE_FORMAT = "yyyyMMdd"
 class MainActivity : AppCompatActivity() {
 
     lateinit var diaryDBHelper: DiaryDBHelper
-
+    private var nowMonth: DateTime = DateTime()
+    private var selectedDate: DateTime? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,26 +35,25 @@ class MainActivity : AppCompatActivity() {
         var calendarMonthList: ArrayList<CalendarMonth> = ArrayList()
 
         var calendar = GregorianCalendar()
-        var date = DateTime()
-        date.setDateTime(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), 1)
-        calendarMonthList.add(CalendarMonth(date))
+        nowMonth.setDateTime(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), 1)
+        calendarMonthList.add(CalendarMonth(nowMonth))
 
-        var viewPager: ViewPager = findViewById(R.id.vpDayBlocks)
-        var calendarMonthAdapter = CalendarMonthAdapter(calendarMonthList)
-        viewPager.adapter = calendarMonthAdapter
+        var dayBlockAdapter = DayBlockAdapter(this, nowMonth.year, nowMonth.month)
+        gvDayBlocks.adapter = dayBlockAdapter
 
-        var currentPage = 12 * 4
-        for (i in 1..currentPage) {
-            calendarMonthAdapter.addFirst()
-            calendarMonthAdapter.addLast()
+        addDayOfWeek()
+
+        setTitle(nowMonth.toString("yyyy/MM"))
+
+        gvDayBlocks.setOnItemClickListener { parent, view, position, id ->
+            val item = dayBlockAdapter.getItem(position)
+            selectedDate = item.date
+            val text = readDiaryText(item.date?.toString("yyyyMMdd") ?: "")
+            tvDayText.text = text
         }
 
-        viewPager.currentItem = currentPage
-
-        addTitle()
-
         tvDayText.setOnClickListener {
-            val selectedDate = calendarMonthAdapter.selectedDayBlock?.getIntentString()
+            val selectedDate = selectedDate?.toString("yyyyMMdd") ?: ""
             if (selectedDate.isNullOrEmpty()) return@setOnClickListener
             val intent = Intent(this, DiaryInputActivity::class.java).apply {
                 putExtra(EXTRA_MESSAGE, selectedDate)
@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
         return diaryDBHelper.readDiary(date)
     }
 
-    private fun addTitle() {
+    private fun addDayOfWeek() {
         var dayOfWeekAdapter: DayOfWeekAdapter?
         var dayOfWeekList = ArrayList<DayOfWeekTitle>()
 
@@ -80,5 +80,28 @@ class MainActivity : AppCompatActivity() {
 
         dayOfWeekAdapter = DayOfWeekAdapter(this, dayOfWeekList)
         gvDayOfWeeks.adapter = dayOfWeekAdapter
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_options_menu_list, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menuListOptionPrev ->
+                nowMonth.addMonths(-1)
+            R.id.menuListOptionNext ->
+                nowMonth.addMonths(1)
+        }
+        var calendarMonthList: ArrayList<CalendarMonth> = ArrayList()
+
+        var calendar = GregorianCalendar()
+        calendarMonthList.add(CalendarMonth(nowMonth))
+
+        var dayBlockAdapter = DayBlockAdapter(this, nowMonth.year, nowMonth.month)
+        gvDayBlocks.adapter = dayBlockAdapter
+        setTitle(nowMonth.toString("yyyy/MM"))
+        return super.onOptionsItemSelected(item)
     }
 }

@@ -1,33 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.MainActivity">
+
     <LinearLayout
             android:id="@+id/viewManager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingLeft="1dp"
-            android:paddingRight="1dp"
+            android:gravity="top"
             android:orientation="vertical"
-            android:gravity="top">
+            android:paddingLeft="1dp"
+            android:paddingRight="1dp">
+
         <GridView
                 android:id="@+id/gvDayOfWeeks"
                 android:layout_width="match_parent"
                 android:layout_height="26dp"
                 android:horizontalSpacing="1dp"
                 android:numColumns="7"
-                android:verticalSpacing="1dp"/>
-        <android.support.v4.view.ViewPager
-                android:id="@+id/vpDayBlocks"
+                android:verticalSpacing="1dp" />
+
+        <GridView
+                android:id="@+id/gvDayBlocks"
                 android:layout_width="match_parent"
-                android:layout_height="346dp"/>
+                android:layout_height="346dp"
+                android:horizontalSpacing="1dp"
+                android:numColumns="7"
+                android:verticalSpacing="1dp" />
+
         <TextView
                 android:id="@+id/tvDayText"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

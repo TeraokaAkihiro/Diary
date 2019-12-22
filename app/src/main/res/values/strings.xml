@@ -15,4 +15,6 @@
     <string name="save_dialog_message">Do you want to discard changes?</string>
     <string name="save_dialog_ok">Don\'t save</string>
     <string name="save_dialog_no">Cancel</string>
+    <string name="menu_list_options_prev">prev month</string>
+    <string name="menu_list_options_next">next month</string>
 </resources>

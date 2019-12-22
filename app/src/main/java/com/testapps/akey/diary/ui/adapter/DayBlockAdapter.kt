@@ -33,7 +33,7 @@ class DayBlockAdapter : BaseAdapter {
         return dayBlockList.size
     }
 
-    override fun getItem(position: Int): Any {
+    override fun getItem(position: Int): DayBlock {
         return dayBlockList[position]
     }
 

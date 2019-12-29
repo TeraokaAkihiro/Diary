@@ -1,19 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/linearLayout"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:background="#ddd"
-              android:gravity="center"
-              android:orientation="vertical"
-              android:padding="3dp">
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ddd"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="3dp">
 
-    <TextView
-            android:id="@+id/tvName"
+    <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:height="50dp"
-            android:gravity="left"
-            android:text="99"
-            android:textSize="16sp"/>
+            android:layout_height="50dp">
+
+        <TextView
+                android:id="@+id/tvName"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:gravity="left"
+                android:text="99"
+                android:textAlignment="center"
+                android:textSize="16sp" />
+
+        <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"/>
+
+        <View
+                android:layout_width="6dp"
+                android:layout_height="6dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginRight="4dp"
+                android:background="@drawable/day_block_text_background" />
+    </LinearLayout>
+
 </LinearLayout>

@@ -19,14 +19,11 @@ class DayBlockAdapter : BaseAdapter {
     var dayBlockList = ArrayList<DayBlock>()
     var context: Context? = null
 
-    var toYear: Int = 0
-    var toMonth: Int = 0
+    var selectedDate: DateTime? = null
 
     constructor(context: Context, year: Int, month: Int) : super() {
         this.context = context
         this.dayBlockList = getMonthDayBlocks(year, month)
-        toYear = year
-        toMonth = month
     }
 
     override fun getCount(): Int {
@@ -50,10 +47,14 @@ class DayBlockAdapter : BaseAdapter {
         dayBlockView.tvName.text = dayBlock.name
 
         val li = dayBlockView.findViewById(R.id.linearLayout) as LinearLayout
-        if (!(toYear == dayBlock.date?.year ?: 0 || toMonth == dayBlock.date?.month ?: 0)) {
-            li.setBackgroundColor(context!!.resources.getColor(R.color.calendarBackgroundSelected))
+        if (dayBlock.date == null) {
+            li.setBackgroundColor(context!!.resources.getColor(R.color.calendarBackgroundElseMonth))
         } else {
-            li.setBackgroundColor(context!!.resources.getColor(R.color.calendarBackgroundDefault))
+            if(dayBlock.date == selectedDate){
+                li.setBackgroundColor(context!!.resources.getColor(R.color.calendarBackgroundSelected))
+            }else{
+                li.setBackgroundColor(context!!.resources.getColor(R.color.calendarBackgroundDefault))
+            }
         }
 
         return dayBlockView

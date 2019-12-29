@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var diaryDBHelper: DiaryDBHelper
     private var nowMonth: DateTime = DateTime()
     private var selectedDate: DateTime? = null
+    private var dayBlockAdapter: DayBlockAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,22 +33,22 @@ class MainActivity : AppCompatActivity() {
 
         diaryDBHelper = DiaryDBHelper(this)
 
-        var calendarMonthList: ArrayList<CalendarMonth> = ArrayList()
-
         var calendar = GregorianCalendar()
         nowMonth.setDateTime(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), 1)
-        calendarMonthList.add(CalendarMonth(nowMonth))
 
-        var dayBlockAdapter = DayBlockAdapter(this, nowMonth.year, nowMonth.month)
+        dayBlockAdapter = DayBlockAdapter(this, nowMonth.year, nowMonth.month)
         gvDayBlocks.adapter = dayBlockAdapter
 
         addDayOfWeek()
 
-        setTitle(nowMonth.toString("yyyy/MM"))
+        title = (nowMonth.toString("yyyy/MM"))
 
         gvDayBlocks.setOnItemClickListener { parent, view, position, id ->
-            val item = dayBlockAdapter.getItem(position)
+            val item = dayBlockAdapter!!.getItem(position)
+            if (item.date == null) return@setOnItemClickListener
             selectedDate = item.date
+            dayBlockAdapter!!.selectedDate = item.date
+            dayBlockAdapter!!.notifyDataSetChanged()
             val text = readDiaryText(item.date?.toString("yyyyMMdd") ?: "")
             tvDayText.text = text
         }
@@ -94,14 +95,12 @@ class MainActivity : AppCompatActivity() {
             R.id.menuListOptionNext ->
                 nowMonth.addMonths(1)
         }
-        var calendarMonthList: ArrayList<CalendarMonth> = ArrayList()
 
-        var calendar = GregorianCalendar()
-        calendarMonthList.add(CalendarMonth(nowMonth))
-
-        var dayBlockAdapter = DayBlockAdapter(this, nowMonth.year, nowMonth.month)
+        dayBlockAdapter = DayBlockAdapter(this, nowMonth.year, nowMonth.month)
         gvDayBlocks.adapter = dayBlockAdapter
-        setTitle(nowMonth.toString("yyyy/MM"))
+
+        title = (nowMonth.toString("yyyy/MM"))
+
         return super.onOptionsItemSelected(item)
     }
 }
